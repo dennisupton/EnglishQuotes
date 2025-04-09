@@ -30,6 +30,31 @@ body{
     gap: 10px;              /* optional: spacing between items */
 
 }
+
+/* Styling the progress bar */
+progress {
+    width: 20em;                /* Full width */
+    height: 20px;               /* Height of the progress bar */
+    appearance: none;           /* Removes default browser appearance */
+    background-color: #121212;    /* Black background */
+    border-radius: 25px;        /* Rounded corners */
+  }
+  
+  /* Custom styling for the progress bar's inner value */
+  progress::-webkit-progress-bar {
+    background-color: #474747;    /* Black background */
+    border-radius: 25px;        /* Rounded corners */
+  }
+  
+  progress::-webkit-progress-value {
+    background-color: #BB86FC;   /* Purple progress */
+    border-radius: 25px;        /* Rounded corners for progress */
+  }
+  
+  progress::-moz-progress-bar {
+    background-color: #BB86FC;   /* Purple progress for Firefox */
+    border-radius: 25px;        /* Rounded corners for Firefox */
+  }
 #start{
     background-color: #121212;
     border-style: solid;

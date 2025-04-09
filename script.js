@@ -44,6 +44,52 @@ quotes = [
     "of mountain-echoes did my boat move on",
     "There hung a darkness, call it solitude or blank desertation"
 ];
+const names = [
+    "The Charge of the Light Brigade",
+    "The Charge of the Light Brigade",
+    "The Charge of the Light Brigade",
+    "Exposure",
+    "The Prelude",
+    "The Prelude",
+    "Bayonet Charge",
+    "Bayonet Charge",
+    "War Photographer",
+    "War Photographer",
+    "Poppies",
+    "Poppies",
+    "Tissue",
+    "War Photographer",
+    "Kamikaze",
+    "Kamikaze",
+    "Kamikaze",
+    "The Emigree",
+    "The Emigree",
+    "The Soldier",
+    "Poppies",
+    "Poppies",
+    "The Prelude",
+    "Ozymandias",
+    "Ozymandias",
+    "Ozymandias",
+    "My Last Duchess",
+    "My Last Duchess",
+    "My Last Duchess",
+    "Checking Out Me History",
+    "Checking Out Me History",
+    "Checking Out Me History",
+    "Checking Out Me History",
+    "Checking Out Me History",
+    "Tissue",
+    "London",
+    "London",
+    "London",
+    "Tissue",
+    "The Prelude",
+    "Tissue",
+    "The Prelude",
+    "The Prelude"
+];
+
 var set = []
 words = []
 
@@ -54,7 +100,13 @@ function getRandomInt(min, max) {
 function generateRandomNumbers(amount, min, max) {
     let randomNumbers = [];  
     for (let i = 0; i < amount; i++) {
-      randomNumbers.push(getRandomInt(min, max));  // Generate and add each random number to the list
+        num = getRandomInt(min, max)
+        while (randomNumbers.includes(num)){
+            console.log("giwneg")
+            num = getRandomInt(min, max)
+        }
+
+        randomNumbers.push(num); 
     }
   
     return randomNumbers;  // Return the list of random numbers
@@ -74,13 +126,19 @@ function start(){
     questions = parseInt(document.querySelector("#questions").value)
     document.querySelector("#main").style.display = 'none';
     document.querySelector("#testing").style.display = 'flex';
-    shuffleArray(quotes)
-    set = quotes.slice(0, questions);
+    document.querySelector("#progress").max = questions
+    document.querySelector("#progress").value = 0
+    set = JSON.parse(JSON.stringify(quotes))
+    shuffleArray(set)
+    set = set.slice(0, questions);
     newCard()
 }
 function newCard(){
+    document.querySelector("#progress").value +=1
     document.querySelector("#quote").innerHTML = ""
     words = set[index].split(/\s+/);
+    console.log(quotes.indexOf(set[index])-1)
+    document.querySelector("#name").innerHTML = names[quotes.indexOf(set[index])]
     i = 0
     inputs = []
     randoms = generateRandomNumbers(blanks,0,words.length-1)
