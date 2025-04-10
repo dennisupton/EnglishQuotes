@@ -57,12 +57,15 @@ document.querySelector("#start").addEventListener("click", start);
 
 function start() {
     index = 0;
+    //Setting quiz options
     let blanks = parseInt(document.querySelector("#blanks").value);
     let questions = parseInt(document.querySelector("#questions").value);
+    //changing web layout
     document.querySelector("#main").style.display = 'none';
     document.querySelector("#testing").style.display = 'flex';
     document.querySelector("#progress").max = questions;
     document.querySelector("#progress").value = 0;
+    //getting quotes
     set = JSON.parse(JSON.stringify(quotes));
     shuffleArray(set);
     set = set.slice(0, questions);
@@ -73,30 +76,31 @@ function newCard(blanks) {
     document.querySelector("#progress").value += 1;
     document.querySelector("#quote").innerHTML = "";
     words = set[index].split(/\s+/);
+    //getting the name of the poem
     document.querySelector("#name").innerHTML = names[quotes.indexOf(set[index])];
 
     inputs = [];  
 
     let randoms = generateRandomNumbers(blanks, 0, words.length - 1);
     let i = 0;
-
+    //going through each word and checking if its one that is being tested
     for (let item of words) {
         if (randoms.includes(i)) {
-            addInput(item, i);  // Add input for blank
-            document.querySelector("#quote").innerHTML += " ";  // Display word normally
+            addInput(item, i); 
+            document.querySelector("#quote").innerHTML += " ";  
         } else {
-            document.querySelector("#quote").innerHTML += item + " ";  // Display word normally
+            document.querySelector("#quote").innerHTML += item + " ";  
         }
         i++;
     }
     document.getElementById(inputs[0]).focus();  // Focus on the first input
-
+    //this adds an event listener to check if anything is right , i might rewrite it as its complexity is stupid but it barely uses any prossesing power
     const elements = document.querySelectorAll('.word');
     elements.forEach(element => {
         element.addEventListener('input', () => {
             for (let item of inputs) {
                 document.getElementById(item).value = document.getElementById(item).value.replace(/\s/g, '');
-                if (words[item].toLowerCase().replace(/[^a-zA-Z]/g, '') == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {
+                if (words[item].toLowerCase().replace(/[^a-zA-Z]/g, '') == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {//making sure it isnt case or chareter sensitive
                     document.getElementById(item).value = words[item];
                     document.getElementById(item).style.border = 'none';
                     nextInput(item);
@@ -105,7 +109,7 @@ function newCard(blanks) {
         });
     });
 }
-
+//checking if space is pressed and skipping the input
 document.addEventListener('keydown', function(event) {
     if ((event.key === ' ' || event.code === 'Space') && document.querySelector("#testing").style.display == 'flex') {
         const focusedElement = event.target;
@@ -117,7 +121,7 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
-
+//function to find the next input or quote needed and goign to it
 function nextInput(item) {
     if (document.getElementById(inputs[inputs.indexOf(item) + 1])) {
         inputs.splice(inputs.indexOf(item), 1);
@@ -139,13 +143,13 @@ function nextInput(item) {
         }, 500);
     }
 }
-
+//input setup so it has all the right values
 function addInput(text, i) {
     const header = document.getElementById('quote');
     const inputField = document.createElement('input');
     inputField.type = 'text';
     inputField.classList.add('word');
-    inputField.id = i; // Use the correct index
+    inputField.id = i; 
     inputField.autocomplete = "off";
     inputField.style.padding_right = "0px";
     inputField.style.padding_left = "0px";
@@ -153,6 +157,6 @@ function addInput(text, i) {
     
     hiddenText.textContent = text;
     inputField.style.width = hiddenText.offsetWidth + 'px';
-    inputs.push(i); // Add the index to the inputs array
+    inputs.push(i);
     header.appendChild(inputField);
 }
