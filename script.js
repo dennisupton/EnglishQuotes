@@ -1,6 +1,6 @@
 var set = [];
 var words = [];
-var inputs = [];  // Declare inputs globally
+var inputs = [];
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -96,7 +96,7 @@ function newCard(blanks) {
         element.addEventListener('input', () => {
             for (let item of inputs) {
                 document.getElementById(item).value = document.getElementById(item).value.replace(/\s/g, '');
-                if (words[item].toLowerCase() == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {
+                if (words[item].toLowerCase().replace(/[^a-zA-Z]/g, '') == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {
                     document.getElementById(item).value = words[item];
                     document.getElementById(item).style.border = 'none';
                     nextInput(item);
@@ -147,6 +147,8 @@ function addInput(text, i) {
     inputField.classList.add('word');
     inputField.id = i; // Use the correct index
     inputField.autocomplete = "off";
+    inputField.style.padding_right = "0px";
+    inputField.style.padding_left = "0px";
     const hiddenText = document.getElementById('hidden-text');
     
     hiddenText.textContent = text;
