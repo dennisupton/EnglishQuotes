@@ -8,24 +8,24 @@
 </head>
 <body>
     <div id="main">
-
-            <h1 class="base" id="title">English Quote Revision</h1>
-            <p class="base">my solution to the annoying english quotes</p>
-            <br>
-            <h3 class="base">Number of Blanks : </h3>
-            <input type="text" class="settings" id="blanks" value="2">
-            <h3 class="base">Number of Questions : </h3>
-            <input type="text" class="settings" id="questions" value="10">
-            <br>
-            <button id="start" class="base">Start</button>
-            
-
+        <h1 class="base" id="title">English Quote Revision</h1>
+        <p class="base">My solution to the annoying English quotes</p>
+        <br>
+        <h3 class="base">Number of Blanks:</h3>
+        <input type="text" class="settings" id="blanks" value="2">
+        <h3 class="base">Number of Questions:</h3>
+        <input type="text" class="settings" id="questions" value="10">
+        <br>
+        <button id="start" class="base">Start</button>
     </div>
+
     <div class="base" id="testing" style="display: none;">
-        <progress id="progress" value="32" max="100"> 32% </progress>
+        <div id="completed-quotes">Completed: 0</div>
+        <progress id="progress" value="32" max="100">32%</progress>
         <h1 id="name"></h1>
         <h1 id="quote"></h1>
     </div>
+
     <span id="hidden-text"></span>
 </body>
 <script src="script.js"></script>

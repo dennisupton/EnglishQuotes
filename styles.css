@@ -71,6 +71,7 @@ progress {
     justify-content: center;   
     align-items: center;    
     height: 100vh;        
+    position: relative; /* Ensure relative positioning to contain absolute elements */
 }
 .word{
     background-color: #121212;
@@ -106,4 +107,19 @@ input:focus {
     font-family: dosis;
     color:#BB86FC;
     background-color: #121212;
+}
+
+#completed-quotes {
+    position: absolute;  /* Positioning it at the top-left corner */
+    top: 20px;           /* Giving some space from the top */
+    left: 20px;          /* Giving some space from the left */
+    font-size: 1.5em;    /* Adjust font size to make it visible */
+    color: #BB86FC;      /* Text color */
+    font-family: dosis;  /* Matching the font family */
+    font-weight: bold;   /* Adding some weight for visibility */
+    z-index: 10;         /* Ensure it appears above other content */
+    padding: 5px;        /* Optional: Add padding for better appearance */
+    border: 2px solid #BB86FC; /* Border color */
+    border-radius: 10px; /* Rounded corners */
+    background-color: #121212; /* Background color */
 }

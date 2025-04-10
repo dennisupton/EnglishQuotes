@@ -1,12 +1,18 @@
 var set = [];
 var words = [];
 var inputs = [];
+var counter = 0;  // Track completed quotes
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getQuotesAndPoems(url = 'quotes.json') {
+function updateCounter() {
+    // Update counter text
+    document.querySelector("#completed-quotes").textContent = `Completed: ${counter}`;
+}
+
+function getQuotesAndNames(url = 'quotebooks/quotes_poc.json') {
     return fetch(url)
         .then(response => {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
@@ -25,12 +31,11 @@ function getQuotesAndPoems(url = 'quotes.json') {
 
 let quotes = [], names = [];
 
-getQuotesAndPoems()
+getQuotesAndNames()
   .then(result => {
     quotes = result.quotes;
     names = result.names;
-    handleQuotesAndNames(quotes, names);
-  });
+});
 
 function generateRandomNumbers(amount, min, max) {
     let randomNumbers = [];
@@ -57,15 +62,20 @@ document.querySelector("#start").addEventListener("click", start);
 
 function start() {
     index = 0;
-    //Setting quiz options
+    // Setting quiz options
     let blanks = parseInt(document.querySelector("#blanks").value);
     let questions = parseInt(document.querySelector("#questions").value);
-    //changing web layout
+    
+    // Hide main view and show study view
     document.querySelector("#main").style.display = 'none';
     document.querySelector("#testing").style.display = 'flex';
     document.querySelector("#progress").max = questions;
     document.querySelector("#progress").value = 0;
-    //getting quotes
+    
+    // Update the counter visibility when starting study mode
+    document.querySelector("#completed-quotes").style.visibility = 'visible'; // Ensure the counter is visible
+    
+    // Getting quotes and shuffling
     set = JSON.parse(JSON.stringify(quotes));
     shuffleArray(set);
     set = set.slice(0, questions);
@@ -76,14 +86,12 @@ function newCard(blanks) {
     document.querySelector("#progress").value += 1;
     document.querySelector("#quote").innerHTML = "";
     words = set[index].split(/\s+/);
-    //getting the name of the poem
     document.querySelector("#name").innerHTML = names[quotes.indexOf(set[index])];
 
     inputs = [];  
 
     let randoms = generateRandomNumbers(blanks, 0, words.length - 1);
     let i = 0;
-    //going through each word and checking if its one that is being tested
     for (let item of words) {
         if (randoms.includes(i)) {
             addInput(item, i); 
@@ -94,13 +102,13 @@ function newCard(blanks) {
         i++;
     }
     document.getElementById(inputs[0]).focus();  // Focus on the first input
-    //this adds an event listener to check if anything is right , i might rewrite it as its complexity is stupid but it barely uses any prossesing power
+    
     const elements = document.querySelectorAll('.word');
     elements.forEach(element => {
         element.addEventListener('input', () => {
             for (let item of inputs) {
                 document.getElementById(item).value = document.getElementById(item).value.replace(/\s/g, '');
-                if (words[item].toLowerCase().replace(/[^a-zA-Z]/g, '') == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {//making sure it isnt case or chareter sensitive
+                if (words[item].toLowerCase().replace(/[^a-zA-Z]/g, '') == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {
                     document.getElementById(item).value = words[item];
                     document.getElementById(item).style.border = 'none';
                     nextInput(item);
@@ -109,7 +117,7 @@ function newCard(blanks) {
         });
     });
 }
-//checking if space is pressed and skipping the input
+
 document.addEventListener('keydown', function(event) {
     if ((event.key === ' ' || event.code === 'Space') && document.querySelector("#testing").style.display == 'flex') {
         const focusedElement = event.target;
@@ -121,7 +129,7 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
-//function to find the next input or quote needed and goign to it
+
 function nextInput(item) {
     if (document.getElementById(inputs[inputs.indexOf(item) + 1])) {
         inputs.splice(inputs.indexOf(item), 1);
@@ -131,6 +139,9 @@ function nextInput(item) {
         document.getElementById(inputs[1]).focus();
     } else {
         document.getElementById(inputs[inputs.indexOf(item)]).blur();
+        counter += 1; // Increment counter when the quote is completed
+        updateCounter(); // Update the counter UI
+
         setTimeout(function() {
             if (index < set.length - 1) {
                 index += 1;
@@ -139,11 +150,12 @@ function nextInput(item) {
                 index = 0;
                 document.querySelector("#main").style.display = 'flex';
                 document.querySelector("#testing").style.display = 'none';
+                // document.querySelector("#completed-quotes").style.visibility = 'hidden'; // Hide the counter when returning to main
             }
         }, 500);
     }
 }
-//input setup so it has all the right values
+
 function addInput(text, i) {
     const header = document.getElementById('quote');
     const inputField = document.createElement('input');
