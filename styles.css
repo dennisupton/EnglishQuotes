@@ -109,17 +109,34 @@ input:focus {
     background-color: #121212;
 }
 
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Dropdown button on hover & focus */
+  .dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+  }
+  
+
 #completed-quotes {
-    position: absolute;  /* Positioning it at the top-left corner */
-    top: 20px;           /* Giving some space from the top */
-    left: 20px;          /* Giving some space from the left */
-    font-size: 1.5em;    /* Adjust font size to make it visible */
-    color: #BB86FC;      /* Text color */
-    font-family: dosis;  /* Matching the font family */
-    font-weight: bold;   /* Adding some weight for visibility */
-    z-index: 10;         /* Ensure it appears above other content */
-    padding: 5px;        /* Optional: Add padding for better appearance */
-    border: 2px solid #BB86FC; /* Border color */
-    border-radius: 10px; /* Rounded corners */
-    background-color: #121212; /* Background color */
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    font-size: 1.5em;
+    color: #BB86FC;
+    font-family: dosis;
+    font-weight: bold;
+    z-index: 10;
+    padding: 5px;
+    border: 2px solid #BB86FC;
+    border-radius: 10px; 
+    background-color: #121212;
 }

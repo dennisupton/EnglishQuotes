@@ -2,20 +2,43 @@ var set = [];
 var words = [];
 var inputs = [];
 var counter = 0;  // Track completed quotes
+var url = "quotebooks/quotes_";
+let quotes = [], names = [];
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+const dropdown = document.querySelector('#dropdown');
+const display = document.querySelector('#selectedOption');
+
+dropdown.addEventListener('change', function() {
+    let text = dropdown.value;  // Get selected option value
+    url = "quotebooks/quotes_" + text + ".json";  // Update the URL
+    console.log("Updated URL:", url);
+    const selectedOptionText = dropdown.options[dropdown.selectedIndex].text;
+    display.textContent = `You selected: ${selectedOptionText}`;
+    
+    // Fetch quotes after the URL is updated
+    getQuotesAndNames(url)
+        .then(result => {
+            quotes = result.quotes;
+            names = result.names;
+        });
+});
 
 function updateCounter() {
     // Update counter text
     document.querySelector("#completed-quotes").textContent = `Completed: ${counter}`;
 }
 
-function getQuotesAndNames(url = 'quotebooks/quotes_poc.json') {
+function getQuotesAndNames(url) {
+    console.log("Fetching from URL:", url);
     return fetch(url)
         .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
             return response.json();
         })
         .then(data => {
@@ -24,18 +47,10 @@ function getQuotesAndNames(url = 'quotebooks/quotes_poc.json') {
             return { quotes, names };
         })
         .catch(error => {
-            console.error('Failed to fetch or parse quotes.json:', error);
+            console.error(`Failed to fetch or parse ${url}:`, error);
             return { quotes: [], names: [] };
         });
 }
-
-let quotes = [], names = [];
-
-getQuotesAndNames()
-  .then(result => {
-    quotes = result.quotes;
-    names = result.names;
-});
 
 function generateRandomNumbers(amount, min, max) {
     let randomNumbers = [];
