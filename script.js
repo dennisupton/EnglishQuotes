@@ -75,7 +75,6 @@ function newCard(blanks) {
     words = set[index].split(/\s+/);
     document.querySelector("#name").innerHTML = names[quotes.indexOf(set[index])];
 
-    // Reset inputs array for each new card
     inputs = [];  
 
     let randoms = generateRandomNumbers(blanks, 0, words.length - 1);
@@ -84,6 +83,7 @@ function newCard(blanks) {
     for (let item of words) {
         if (randoms.includes(i)) {
             addInput(item, i);  // Add input for blank
+            document.querySelector("#quote").innerHTML += " ";  // Display word normally
         } else {
             document.querySelector("#quote").innerHTML += item + " ";  // Display word normally
         }
