@@ -1,7 +1,10 @@
-let quotes = [], names = [], set = [], words = [];
-let index = 0;
+var set = [];
+var words = [];
+var inputs = [];  // Declare inputs globally
 
-document.querySelector("#start").addEventListener("click", start);
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 function getQuotesAndPoems(url = 'quotes.json') {
     return fetch(url)
@@ -20,17 +23,25 @@ function getQuotesAndPoems(url = 'quotes.json') {
         });
 }
 
+let quotes = [], names = [];
+
+getQuotesAndPoems()
+  .then(result => {
+    quotes = result.quotes;
+    names = result.names;
+    handleQuotesAndNames(quotes, names);
+  });
+
 function generateRandomNumbers(amount, min, max) {
     let randomNumbers = [];
-    while (randomNumbers.length < amount) {
+    for (let i = 0; i < amount; i++) {
         let num = getRandomInt(min, max);
-        if (!randomNumbers.includes(num)) randomNumbers.push(num);
+        while (randomNumbers.includes(num)) {
+            num = getRandomInt(min, max);
+        }
+        randomNumbers.push(num);
     }
     return randomNumbers;
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function shuffleArray(arr) {
@@ -40,59 +51,69 @@ function shuffleArray(arr) {
     }
 }
 
+let index = 0;
+
+document.querySelector("#start").addEventListener("click", start);
+
 function start() {
     index = 0;
     let blanks = parseInt(document.querySelector("#blanks").value);
     let questions = parseInt(document.querySelector("#questions").value);
-
     document.querySelector("#main").style.display = 'none';
     document.querySelector("#testing").style.display = 'flex';
     document.querySelector("#progress").max = questions;
     document.querySelector("#progress").value = 0;
-
-    getQuotesAndPoems()
-        .then(result => {
-            quotes = result.quotes;
-            names = result.names;
-            set = [...quotes];
-            shuffleArray(set);
-            set = set.slice(0, questions);
-            newCard();
-        });
+    set = JSON.parse(JSON.stringify(quotes));
+    shuffleArray(set);
+    set = set.slice(0, questions);
+    newCard(blanks);
 }
 
-function newCard() {
+function newCard(blanks) {
     document.querySelector("#progress").value += 1;
     document.querySelector("#quote").innerHTML = "";
     words = set[index].split(/\s+/);
-
     document.querySelector("#name").innerHTML = names[quotes.indexOf(set[index])];
-    let randoms = generateRandomNumbers(parseInt(document.querySelector("#blanks").value), 0, words.length - 1);
-    
-    randoms.forEach((item, i) => {
-        addInput(words[item], i);
+
+    // Reset inputs array for each new card
+    inputs = [];  
+
+    let randoms = generateRandomNumbers(blanks, 0, words.length - 1);
+    let i = 0;
+
+    for (let item of words) {
+        if (randoms.includes(i)) {
+            addInput(item, i);  // Add input for blank
+        } else {
+            document.querySelector("#quote").innerHTML += item + " ";  // Display word normally
+        }
+        i++;
+    }
+    document.getElementById(inputs[0]).focus();  // Focus on the first input
+
+    const elements = document.querySelectorAll('.word');
+    elements.forEach(element => {
+        element.addEventListener('input', () => {
+            for (let item of inputs) {
+                document.getElementById(item).value = document.getElementById(item).value.replace(/\s/g, '');
+                if (words[item].toLowerCase() == document.getElementById(item).value.toLowerCase().replace(/[^a-zA-Z]/g, '')) {
+                    document.getElementById(item).value = words[item];
+                    document.getElementById(item).style.border = 'none';
+                    nextInput(item);
+                }
+            }
+        });
     });
-
-    document.getElementById(inputs[0]).focus();
-}
-
-function addInput(text, i) {
-    const inputField = document.createElement('input');
-    inputField.type = 'text';
-    inputField.classList.add('word');
-    inputField.id = i;
-    inputField.autocomplete = "off";
-    document.getElementById('quote').appendChild(inputField);
 }
 
 document.addEventListener('keydown', function(event) {
-    if (event.key === ' ' || event.code === 'Space') {
+    if ((event.key === ' ' || event.code === 'Space') && document.querySelector("#testing").style.display == 'flex') {
         const focusedElement = event.target;
         if (focusedElement) {
             focusedElement.style.color = '#d1abff';
             focusedElement.value = words[focusedElement.id];
             focusedElement.style.border = 'none';
-            nextInput(focusedElement.id);
+            nextInput(parseInt(focusedElement.id));
         }
     }
 });
@@ -101,11 +122,15 @@ function nextInput(item) {
     if (document.getElementById(inputs[inputs.indexOf(item) + 1])) {
         inputs.splice(inputs.indexOf(item), 1);
         document.getElementById(inputs[inputs.indexOf(item) + 1]).focus();
+    } else if (inputs.length >= 2) {
+        inputs.splice(inputs.indexOf(item), 1);
+        document.getElementById(inputs[1]).focus();
     } else {
-        setTimeout(() => {
+        document.getElementById(inputs[inputs.indexOf(item)]).blur();
+        setTimeout(function() {
             if (index < set.length - 1) {
                 index += 1;
-                newCard();
+                newCard(document.querySelector("#blanks").value);
             } else {
                 index = 0;
                 document.querySelector("#main").style.display = 'flex';
@@ -113,4 +138,19 @@ function nextInput(item) {
             }
         }, 500);
     }
+}
+
+function addInput(text, i) {
+    const header = document.getElementById('quote');
+    const inputField = document.createElement('input');
+    inputField.type = 'text';
+    inputField.classList.add('word');
+    inputField.id = i; // Use the correct index
+    inputField.autocomplete = "off";
+    const hiddenText = document.getElementById('hidden-text');
+    
+    hiddenText.textContent = text;
+    inputField.style.width = hiddenText.offsetWidth + 'px';
+    inputs.push(i); // Add the index to the inputs array
+    header.appendChild(inputField);
 }
