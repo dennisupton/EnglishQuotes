@@ -1,0 +1,9 @@
+{
+    "name": "mercury",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "powershell -Command \"Remove-Item -Recurse -Force dist; New-Item -ItemType Directory -Path dist; Copy-Item -Recurse -Force src/* dist/\""
+    }
+  }

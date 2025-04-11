@@ -1,0 +1,142 @@
+@font-face {
+    font-family: dosis;
+    src: url(dosis.ttf);
+}
+
+body{
+    background-color: #121212;
+}
+#title{
+    text-align: center;
+    font-size: 3em;
+}
+.base{
+    font-family: dosis;
+    color: #BB86FC;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+}
+#quote{
+    font-size: 3em;
+    width: 80%;  /* Control width to make sure wrapping occurs */
+    overflow-wrap: break-word; /* Force long words to break and wrap */
+    word-wrap: break-word;    /* Also allows wrapping */
+}
+#main {
+    display: flex;
+    flex-direction: column; /* this stacks children vertically */
+    align-items: center;    /* optional: center items horizontally */
+    gap: 10px;              /* optional: spacing between items */
+
+}
+
+/* Styling the progress bar */
+progress {
+    width: 20em;                /* Full width */
+    height: 20px;               /* Height of the progress bar */
+    appearance: none;           /* Removes default browser appearance */
+    background-color: #121212;    /* Black background */
+    border-radius: 25px;        /* Rounded corners */
+  }
+  
+  /* Custom styling for the progress bar's inner value */
+  progress::-webkit-progress-bar {
+    background-color: #474747;    /* Black background */
+    border-radius: 25px;        /* Rounded corners */
+  }
+  
+  progress::-webkit-progress-value {
+    background-color: #BB86FC;   /* Purple progress */
+    border-radius: 25px;        /* Rounded corners for progress */
+  }
+  
+  progress::-moz-progress-bar {
+    background-color: #BB86FC;   /* Purple progress for Firefox */
+    border-radius: 25px;        /* Rounded corners for Firefox */
+  }
+#start{
+    background-color: #121212;
+    border-style: solid;
+    border-color: #BB86FC;
+    border-radius: 10px;
+    border-width: 5px;
+    font-size: 2em;
+    font-weight: bold;
+    width: 3em;
+}
+#testing {
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;   
+    align-items: center;    
+    height: 100vh;        
+    position: relative; /* Ensure relative positioning to contain absolute elements */
+}
+.word{
+    background-color: #121212;
+    border-color: #BB86FC;
+    border-radius: 5px;
+    border-width: 5px;
+    font-family: dosis;
+    font-size: 1em;
+    color: #BB86FC;
+    font-weight: bold;
+    border-style: solid;
+}
+#hidden-text {
+    visibility: hidden;
+    white-space: nowrap;
+    position: absolute;
+    font-weight: bold;
+    font-size: 3em;
+}
+input:focus {
+    outline: none;
+}
+.settings{
+    border-radius: 10px;
+    border: #BB86FC;
+    border-width: 10px;
+    border: solid;
+    background-color: #121212;
+    text-align: center;
+    width: 2em;
+    font-size: 1.5em;
+    font-style: bold;
+    font-family: dosis;
+    color:#BB86FC;
+    background-color: #121212;
+}
+
+/* Dropdown Button */
+.dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  /* Dropdown button on hover & focus */
+  .dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+  }
+  
+
+#completed-quotes {
+    position: absolute;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    font-size: 1.5em;
+    color: #BB86FC;
+    font-family: dosis;
+    font-weight: bold;
+    z-index: 10;
+    padding: 5px;
+    border: 2px solid #BB86FC;
+    border-radius: 10px; 
+    background-color: #121212;
+}

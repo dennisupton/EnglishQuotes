@@ -2,7 +2,7 @@ var set = [];
 var words = [];
 var inputs = [];
 var counter = 0;  // Track completed quotes
-var url = "quotebooks/quotes_";
+var url = "/quotebooks/quotes_";
 let quotes = [], names = [];
 
 window.onscroll = function () {
