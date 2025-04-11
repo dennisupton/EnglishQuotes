@@ -1,2 +1,2 @@
 # English Quotes Revision Website
-Visit at [mercuryrevision.web.app](url)
+Visit us [here](mercuryrevision.web.app)
