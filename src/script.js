@@ -5,6 +5,7 @@ var counter = 0;  // Track completed quotes
 var url = "/quotebooks/quotes_";
 let quotes = [], names = [];
 
+// !TODO So much jank fix
 window.onscroll = function () {
     window.scrollTo(0,0);
 }
